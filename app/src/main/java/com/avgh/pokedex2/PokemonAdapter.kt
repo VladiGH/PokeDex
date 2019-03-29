@@ -1,6 +1,7 @@
 package com.avgh.pokedex2
 
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +35,8 @@ class PokemonAdapter(val items: List<Pokemon>) : RecyclerView.Adapter<PokemonAda
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
     }
+
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         fun bind(item: Pokemon) = with (itemView){
             tv_pokemon_name.text = item.name

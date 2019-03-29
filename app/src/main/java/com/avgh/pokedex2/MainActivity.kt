@@ -14,6 +14,7 @@ import com.avgh.pokedex2.models.Pokemon
 import com.avgh.pokedex2.utilities.NetworkUtilities
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONObject
 import java.io.IOException
 import java.net.URL
 
@@ -28,7 +29,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         bt_search_pokemon.setOnClickListener {
             val pokemonNumber: String = et_pokemon_number.text.toString().trim()
             if (pokemonNumber.isEmpty()) {
@@ -37,26 +37,23 @@ class MainActivity : AppCompatActivity() {
                 FetchPokemonTask().execute(pokemonNumber)
             }
         }
-        initRecycler()
+        FetchPokemonTask().execute()
+
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
-        super.onSaveInstanceState(outState)
-    }
-
-    private inner class FetchPokemonTask : AsyncTask<String, Void, String {
+    private inner class FetchPokemonTask : AsyncTask<String, Void, String>() {
 
         // TODO: Retornar una lista de Pokemons
 
         override fun doInBackground(vararg pokemonNumber: String?): String{
             if (pokemonNumber.count() == 0) {
-                return null
+                return ""
             }
 
             var IDPoke: String = pokemonNumber[0]!!
             val pokeAPI: URL = NetworkUtilities.buildUrl(IDPoke)!!
 
-            val ListadePokemon = mutableListOf<Pokemon>()
+
             try {
                 val result: String = NetworkUtilities.getResponseFromHttpUrl(pokeAPI)!!
                 //val gson = Gson()
@@ -75,14 +72,23 @@ class MainActivity : AppCompatActivity() {
         // TODO: Recibir la lista
         override fun onPostExecute(pokemonInfo: String?) {
             if (pokemonInfo != null || pokemonInfo != "") {
+
+                var jsonPokemon = JSONObject(pokemonInfo)
+
+                var listaPokemon = jsonPokemon.getJSONArray("pokemon")
              //   mResultText.setText(pokemonInfo)
+                for (i in 0 until listaPokemon.length()){
+                    var pokemonNuevo = Pokemon(i, listaPokemon.getJSONObject(1).getString("name"), listaPokemon.getJSONObject(i).getString("type"))
+                    pokemonList.add(pokemonNuevo)
+                }
             } else {
                // mResultText.setText(getString(R.string.text_not_found_message))
             }
 
-
+            initRecycler()
             // TODO: Setear las lista al adaptador del RECYCLER mando a llamar el init recycler recibiendo la lista de objetos
         }
+
     }
 
     fun initRecycler() {
