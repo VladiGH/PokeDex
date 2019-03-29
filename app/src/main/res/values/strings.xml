@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Pokedex2</string>
+    <string name="type">Type:</string>
+    <string name="nombre">Nombre:</string>
+    <string name="numero_del_tipo_de_pokemon">Numero del tipo de Pokemon</string>
+    <string name="id_type">ID Type</string>
+    <string name="search">search</string>
+</resources>
