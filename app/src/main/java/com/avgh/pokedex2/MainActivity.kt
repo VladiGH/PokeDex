@@ -20,7 +20,6 @@ import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
-    var pokemonList: MutableList<Pokemon> = ArrayList()
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
 
@@ -28,80 +27,115 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        FetchPokemonTask().execute("")
+        searchPokemon()
+    }
 
+    private fun searchPokemon(){
         bt_search_pokemon.setOnClickListener {
-            val pokemonNumber: String = et_pokemon_number.text.toString().trim()
-            if (pokemonNumber.isEmpty()) {
-                Snackbar.make(bt_search_pokemon,"Please, enter a ID pokemon",Snackbar.LENGTH_SHORT).show()
-            } else {
-                FetchPokemonTask().execute(pokemonNumber)
+            if (!et_pokemon.text.isEmpty()){
+                QueryPokemonTask().execute("${et_pokemon.text}")
             }
         }
-        FetchPokemonTask().execute()
-
     }
 
     private inner class FetchPokemonTask : AsyncTask<String, Void, String>() {
 
-        // TODO: Retornar una lista de Pokemons
+        override fun doInBackground(vararg query: String): String{
+            if (query.isNullOrEmpty()) return ""
 
-        override fun doInBackground(vararg pokemonNumber: String?): String{
-            if (pokemonNumber.count() == 0) {
-                return ""
-            }
+            val ID = query[0]
+            val pokeAPI = NetworkUtilities().buildUrl("pokemon",ID)
 
-            var IDPoke: String = pokemonNumber[0]!!
-            val pokeAPI: URL = NetworkUtilities.buildUrl(IDPoke)!!
-
-
-            try {
-                val result: String = NetworkUtilities.getResponseFromHttpUrl(pokeAPI)!!
-                //val gson = Gson()
-                //val pokeObject: Pokemon = gson.fromJson(result, Pokemon::class.java)
-
-                //ListadePokemon.add(pokeObject)
-                // TODO : Parsear el String a JSON con gson usando los campos con los campos de POJO y retorno las lista con esos objetos
-                return result
+            return try {
+                NetworkUtilities().getResponseFromHttpUrl(pokeAPI)
             } catch (e: IOException) {
                 e.printStackTrace()
-                return ""
+                ""
             }
 
         }
 
-        // TODO: Recibir la lista
-        override fun onPostExecute(pokemonInfo: String?) {
-            if (pokemonInfo != null || pokemonInfo != "") {
 
-                var jsonPokemon = JSONObject(pokemonInfo)
-
-                var listaPokemon = jsonPokemon.getJSONArray("pokemon")
-             //   mResultText.setText(pokemonInfo)
-                for (i in 0 until listaPokemon.length()){
-                    var pokemonNuevo = Pokemon(i, listaPokemon.getJSONObject(1).getString("name"), listaPokemon.getJSONObject(i).getString("type"))
-                    pokemonList.add(pokemonNuevo)
+        override fun onPostExecute(pokemonInfo: String) {
+            val pokemon = if (!pokemonInfo.isEmpty()) {
+                val root = JSONObject(pokemonInfo)
+                val results = root.getJSONArray("results")
+                MutableList(15) { i ->
+                    val result = JSONObject(results[i].toString())
+                    Pokemon(i,
+                        result.getString("name").capitalize(),
+                        R.string.n_a_value.toString(),
+                        R.string.n_a_value.toString(),
+                        R.string.n_a_value.toString(),
+                        R.string.n_a_value.toString(),
+                        result.getString("url"),
+                        R.string.n_a_value.toString())
                 }
             } else {
-               // mResultText.setText(getString(R.string.text_not_found_message))
+                MutableList(20) { i ->
+                    Pokemon(i, R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(),R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString())
+                }
             }
 
-            initRecycler()
+            initRecycler(pokemon)
             // TODO: Setear las lista al adaptador del RECYCLER mando a llamar el init recycler recibiendo la lista de objetos
         }
 
     }
 
-    fun initRecycler() {
-        //var pokemon: MutableList<Pokemon> = MutableList(15)
-        //{ i -> Pokemon(i, "Name: " + i, "Type: " + i) }
-
+    fun initRecycler(pokemon: MutableList<Pokemon>){
         viewManager = LinearLayoutManager(this)
-        viewAdapter = PokemonAdapter(pokemonList)
+        viewAdapter = PokemonAdapter(pokemon/*, {pokemonItem: Pokemon -> pokemonItemClicked(pokemonItem)}*/)
 
         rv_pokemon_list.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
+        }
+    }
+
+    private inner class QueryPokemonTask : AsyncTask<String, Void, String>() {
+
+        override fun doInBackground(vararg query: String): String {
+
+            if (query.isNullOrEmpty()) return ""
+
+            val ID = query[0]
+            val pokeAPI = NetworkUtilities().buildUrl("type",ID)
+
+            return try {
+                NetworkUtilities().getResponseFromHttpUrl(pokeAPI)
+            } catch (e: IOException) {
+                e.printStackTrace()
+                ""
+            }
+
+        }
+
+        override fun onPostExecute(pokemonInfo: String) {
+            val pokemon = if (!pokemonInfo.isEmpty()) {
+                val root = JSONObject(pokemonInfo)
+                val results = root.getJSONArray("pokemon")
+                MutableList(20) { i ->
+                    val resulty = JSONObject(results[i].toString())
+                    val result = JSONObject(resulty.getString("pokemon"))
+
+                    Pokemon(i,
+                        result.getString("name").capitalize(),
+                        R.string.n_a_value.toString(),
+                        R.string.n_a_value.toString(),
+                        R.string.n_a_value.toString(),
+                        R.string.n_a_value.toString(),
+                        result.getString("url"),
+                        R.string.n_a_value.toString())
+                }
+            } else {
+                MutableList(15) { i ->
+                    Pokemon(i, R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(),R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString())
+                }
+            }
+            initRecycler(pokemon)
         }
     }
 

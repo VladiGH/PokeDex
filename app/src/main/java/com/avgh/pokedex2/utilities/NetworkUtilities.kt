@@ -8,33 +8,33 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.util.*
 
-object NetworkUtilities {
+class NetworkUtilities {
     val POKEMON_API_BASE_URL = "https://pokeapi.co/api/v2/"
     val POKEMON_INFO = "pokemon"
+    val POKEMON_TYPE = "type"
 
     private val TAG = NetworkUtilities::class.java.simpleName
 
-    fun buildUrl(pokeID: String): URL? {
+    fun buildUrl(root: String, pokeID: String): URL {
         val builtUri = Uri.parse(POKEMON_API_BASE_URL)
             .buildUpon()
-            .appendPath(POKEMON_INFO)
+            .appendPath(root)
             .appendPath(pokeID)
             .build()
 
-        var url: URL? = null
-        try {
-            url = URL(builtUri.toString())
+        val url = try {
+            URL(builtUri.toString())
         } catch (e: MalformedURLException) {
-            e.printStackTrace()
+            URL("")
         }
 
-        Log.d(TAG, "Built URI " + url!!)
+        Log.d(TAG, "Built URI $url")
 
         return url
     }
 
     @Throws(IOException::class)
-    fun getResponseFromHttpUrl(url: URL): String? {
+    fun getResponseFromHttpUrl(url: URL): String {
         val urlConnection = url.openConnection() as HttpURLConnection
         try {
             val `in` = urlConnection.inputStream
@@ -46,7 +46,7 @@ object NetworkUtilities {
             return if (hasInput) {
                 scanner.next()
             } else {
-                null
+                ""
             }
         } finally {
             urlConnection.disconnect()

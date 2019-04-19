@@ -17,23 +17,23 @@
                 android:text="@string/numero_del_tipo_de_pokemon" />
 
         <EditText
-                android:id="@+id/et_pokemon_number"
+                android:id="@+id/et_pokemon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_label_pokemon"
                 android:layout_toLeftOf="@id/bt_search_pokemon"
                 android:layout_alignParentLeft="true"
+                android:inputType="text"
                 android:drawableStart="@mipmap/pikachu_icon"
                 android:drawableLeft="@mipmap/pikachu_icon"
                 android:drawablePadding="@dimen/small_gap"
-                android:hint="@string/id_type"
-                android:inputType="number" />
+                android:hint="@string/type_your_pokemon"/>
 
         <Button
                 android:id="@+id/bt_search_pokemon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/et_pokemon_number"
+                android:layout_alignBaseline="@id/et_pokemon"
                 android:layout_alignParentRight="true"
                 android:text="@string/search" />
 
