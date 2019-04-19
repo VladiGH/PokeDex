@@ -1,5 +1,6 @@
 package com.avgh.pokedex2
 
+import android.content.Intent
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -37,6 +38,9 @@ class MainActivity : AppCompatActivity() {
                 QueryPokemonTask().execute("${et_pokemon.text}")
             }
         }
+    }
+    private fun pokemonItemClicked(item: Pokemon){
+        startActivity(Intent(this, pokeViewer::class.java).putExtra("CLAVIER", item.url))
     }
 
     private inner class FetchPokemonTask : AsyncTask<String, Void, String>() {
@@ -86,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 
     fun initRecycler(pokemon: MutableList<Pokemon>){
         viewManager = LinearLayoutManager(this)
-        viewAdapter = PokemonAdapter(pokemon/*, {pokemonItem: Pokemon -> pokemonItemClicked(pokemonItem)}*/)
+        viewAdapter = PokemonAdapter(pokemon, {pokemonItem: Pokemon -> pokemonItemClicked(pokemonItem)})
 
         rv_pokemon_list.apply {
             setHasFixedSize(true)
