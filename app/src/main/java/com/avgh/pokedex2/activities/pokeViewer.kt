@@ -1,10 +1,11 @@
-package com.avgh.pokedex2
+package com.avgh.pokedex2.activities
 
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import com.avgh.pokedex2.R
 import com.avgh.pokedex2.models.Pokemon
 import com.avgh.pokedex2.utilities.NetworkUtilities
 import com.squareup.picasso.Picasso
@@ -90,7 +91,8 @@ class pokeViewer : AppCompatActivity() {
                     JSONObject(sprites).getString("front_default"))
 
             } else {
-                Pokemon(0, R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(),R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString())
+                Pokemon(0, R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(),
+                    R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString())
             }
             init(pokemon)
         }

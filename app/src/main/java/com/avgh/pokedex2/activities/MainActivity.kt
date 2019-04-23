@@ -1,23 +1,18 @@
-package com.avgh.pokedex2
+package com.avgh.pokedex2.activities
 
 import android.content.Intent
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import com.avgh.pokedex2.adapters.PokemonAdapter
+import com.avgh.pokedex2.R
 import com.avgh.pokedex2.models.Pokemon
 import com.avgh.pokedex2.utilities.NetworkUtilities
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 import java.io.IOException
-import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
@@ -78,7 +73,8 @@ class MainActivity : AppCompatActivity() {
                 }
             } else {
                 MutableList(20) { i ->
-                    Pokemon(i, R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(),R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString())
+                    Pokemon(i, R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(),
+                        R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString())
                 }
             }
 
@@ -90,7 +86,10 @@ class MainActivity : AppCompatActivity() {
 
     fun initRecycler(pokemon: MutableList<Pokemon>){
         viewManager = LinearLayoutManager(this)
-        viewAdapter = PokemonAdapter(pokemon, {pokemonItem: Pokemon -> pokemonItemClicked(pokemonItem)})
+        viewAdapter =
+            PokemonAdapter(
+                pokemon,
+                { pokemonItem: Pokemon -> pokemonItemClicked(pokemonItem) })
 
         rv_pokemon_list.apply {
             setHasFixedSize(true)
@@ -136,7 +135,8 @@ class MainActivity : AppCompatActivity() {
                 }
             } else {
                 MutableList(15) { i ->
-                    Pokemon(i, R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(),R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString())
+                    Pokemon(i, R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(),
+                        R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString())
                 }
             }
             initRecycler(pokemon)

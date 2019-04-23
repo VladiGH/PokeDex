@@ -8,4 +8,6 @@
     <string name="n_a_value">N/A</string>
     <string name="type_your_pokemon_android_inputtype">Type your Pokemon! android:inputType=</string>
     <string name="type_your_pokemon">type your Pokemon</string>
+    <string name="weight">Weight</string>
+    <string name="lorem_ipsum_dolor_sit_amet_consectetur_adipiscing_elit_nam_maximus_fermentum_lorem_nec_bibendum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam maximus fermentum lorem, nec bibendum</string>
 </resources>
