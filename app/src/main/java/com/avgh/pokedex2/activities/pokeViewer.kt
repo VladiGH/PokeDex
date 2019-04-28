@@ -33,7 +33,7 @@ class pokeViewer : AppCompatActivity() {
 
     fun init(pokemon: Pokemon){
         Picasso.with(this)
-            .load(pokemon.sprite)
+            .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png")
             .resize((this.resources.displayMetrics.widthPixels/this.resources.displayMetrics.density).toInt(),256)
             .centerCrop()
             .error(R.drawable.ic_pokemon_go)

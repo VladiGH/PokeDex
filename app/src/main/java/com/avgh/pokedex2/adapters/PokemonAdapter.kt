@@ -5,12 +5,15 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.avgh.pokedex2.MyPokeAdapter
 import com.avgh.pokedex2.R
 import com.avgh.pokedex2.models.Pokemon
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.list_element_pokemon.view.*
 
 
-class PokemonAdapter(val items: List<Pokemon>, val clickListener: (Pokemon) -> Unit) : RecyclerView.Adapter<PokemonAdapter.ViewHolder> () {
+class PokemonAdapter(var items: List<Pokemon>, val clickListener: (Pokemon) -> Unit) : RecyclerView.Adapter<PokemonAdapter.ViewHolder> (), MyPokeAdapter {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
        val view = LayoutInflater.from(parent.context)
@@ -24,7 +27,19 @@ class PokemonAdapter(val items: List<Pokemon>, val clickListener: (Pokemon) -> U
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position], clickListener)
+
+        var posPlus:Int = position + 1
+
+        Glide.with(holder.itemView.context)
+            .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$posPlus.png")
+            .into(holder.itemView.tv_pokemon_img)
     }
+
+    override fun changeDataSet(newDataSet: MutableList<Pokemon>) {
+        this.items = newDataSet
+        notifyDataSetChanged()
+    }
+
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){

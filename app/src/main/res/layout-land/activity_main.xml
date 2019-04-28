@@ -9,17 +9,23 @@
     android:orientation="horizontal"
     tools:context=".activities.MainActivity">
 
-    <!-- TODO (7.3.1) Note que se define  el recyclerview  y el panel para poner un fragmento-->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_pokemon_list"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
-
     <FrameLayout
-        android:id="@+id/fragment_content"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:background="@color/colorAccent"></FrameLayout>
+        android:id="@+id/landscape_left">
+
+    </FrameLayout>
+    <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent">
+
+        <FrameLayout
+                android:id="@+id/fragment_content_right"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
 </LinearLayout>
