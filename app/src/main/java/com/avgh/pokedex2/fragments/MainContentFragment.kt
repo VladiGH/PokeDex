@@ -32,10 +32,6 @@ class MainContentFragment: Fragment() {
     }
 
     fun bindData(view: View){
-        Log.d("probando: ",pokemon.id.toString())
-        Log.d("probando2: ",pokemon.fsttype)
-        Log.d("probando3: ",pokemon.weight)
-        Log.d("probando4: ",pokemon.height)
         view.name_main_content_fragment.text = pokemon.name
         view.type_main_content_fragment.text = pokemon.fsttype
         view.weight_main_content_fragment.text = pokemon.weight
