@@ -35,7 +35,7 @@ class PokemonAdapter(var items: List<Pokemon>, val clickListener: (Pokemon) -> U
             .into(holder.itemView.tv_pokemon_img)
     }
 
-    override fun changeDataSet(newDataSet: MutableList<Pokemon>) {
+    override fun changeDataSet(newDataSet: ArrayList<Pokemon>) {
         this.items = newDataSet
         notifyDataSetChanged()
     }

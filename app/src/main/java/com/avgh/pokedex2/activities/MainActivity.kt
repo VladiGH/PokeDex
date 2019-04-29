@@ -34,13 +34,15 @@ class MainActivity : AppCompatActivity(), PokeFragment.SearchNewPokemonListener 
         setContentView(R.layout.activity_main)
         pokeList = savedInstanceState?.getParcelableArrayList(AppConstants.saveinstance_key) ?: ArrayList()
         initMainFragment()
+    }
 
-
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelableArrayList(AppConstants.saveinstance_key, pokeList)
+        super.onSaveInstanceState(outState)
     }
 
     fun initMainFragment(){
-        FetchPokemonTask().execute("")
-        pokeList.clear()
+       FetchPokemonTask().execute("")
         mainFragment = PokeFragment.newInstance(pokeList)
 
         val resource = if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
@@ -54,13 +56,10 @@ class MainActivity : AppCompatActivity(), PokeFragment.SearchNewPokemonListener 
 
         changeFragment(resource, mainFragment)
     }
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelableArrayList(AppConstants.saveinstance_key, pokeList)
-        super.onSaveInstanceState(outState)
-    }
+
 
     override fun searchPokemon(pokeName: String) {
-        QueryPokemonTask().execute(pokeName)
+
     }
 
     override fun managePortraitItemClick(pokemon: Pokemon) {
@@ -72,55 +71,10 @@ class MainActivity : AppCompatActivity(), PokeFragment.SearchNewPokemonListener 
     private fun changeFragment(id: Int, frag: Fragment){ supportFragmentManager.beginTransaction().replace(id, frag).commit() }
 
     override fun manageLandscapeItemClick(pokemon: Pokemon) {
-        mainContentFragment = MainContentFragment.newInstance(pokemon)
-        changeFragment(R.id.fragment_content_right, mainContentFragment)
+        this.mainContentFragment = MainContentFragment.newInstance(pokemon)
+        changeFragment(R.id.fragment_content_right, this.mainContentFragment)
     }
 
-    private inner class QueryPokemonTask : AsyncTask<String, Void, String>() {
-
-        override fun doInBackground(vararg query: String): String {
-
-            if (query.isNullOrEmpty()) return ""
-
-            val ID = query[0]
-            val pokeAPI = NetworkUtilities().buildUrl("type", ID)
-
-            return try {
-                NetworkUtilities().getResponseFromHttpUrl(pokeAPI)
-            } catch (e: IOException) {
-                e.printStackTrace()
-                ""
-            }
-        }
-        override fun onPostExecute(pokemonInfo: String) {
-            if (!pokemonInfo.isEmpty()) {
-                val root = JSONObject(pokemonInfo)
-                val results = root.getJSONArray("pokemon")
-                for(i in 0..15) {
-                    val resulty = JSONObject(results[i].toString())
-                    val result = JSONObject(resulty.getString("pokemon"))
-
-                    val pokemon = Pokemon(i,
-                        result.getString("name").capitalize(),
-                        R.string.n_a_value.toString(),
-                        R.string.n_a_value.toString(),
-                        R.string.n_a_value.toString(),
-                        R.string.n_a_value.toString(),
-                        result.getString("url"),
-                        R.string.n_a_value.toString())
-
-                    pokeList.add(pokemon)
-                }
-            } else {
-                pokeList.clear()
-                for(i in 1..15){
-                    val pokeVacio = Pokemon(i, R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(),
-                        R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString())
-                    pokeList.add(pokeVacio)
-                }
-            }
-        }
-    }
 
     private inner class FetchPokemonTask : AsyncTask<String, Void, String>() {
 
@@ -156,7 +110,7 @@ class MainActivity : AppCompatActivity(), PokeFragment.SearchNewPokemonListener 
                     pokeList.add(pokemon)
                 }
             } else {
-                for(i in 1..15){
+                for(i in 0..15){
                     val pokeVacio = Pokemon(i, R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(),R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString())
                     pokeList.add(pokeVacio)
                 }

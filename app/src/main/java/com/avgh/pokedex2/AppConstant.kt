@@ -8,5 +8,5 @@ object AppConstants {
 }
 
 interface MyPokeAdapter {
-    fun changeDataSet(newDataSet : MutableList<Pokemon>)
+    fun changeDataSet(newDataSet : ArrayList<Pokemon>)
 }

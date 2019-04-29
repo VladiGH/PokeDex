@@ -42,7 +42,7 @@ class MainContentFragment: Fragment() {
                 .resize((this.resources.displayMetrics.widthPixels/this.resources.displayMetrics.density).toInt(),256)
                 .centerCrop()
                 .error(R.drawable.ic_pokemon_go)
-                .into(image_main_content_fragment)
+                .into(view.image_main_content_fragment)
     }
 
 }

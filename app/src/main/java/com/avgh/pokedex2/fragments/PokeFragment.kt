@@ -64,7 +64,12 @@ class PokeFragment: Fragment() {
         return view
     }
     fun initRecycler(pokemon: ArrayList<Pokemon>){
-        pokeAdapter = PokemonAdapter(pokemon, { pokemon:Pokemon->pokemonItemClicked(pokemon)})
+        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            pokeAdapter = PokemonAdapter(pokemon, { pokemon: Pokemon -> pokemonItemClicked(pokemon) })
+        }
+        if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            pokeAdapter = PokemonAdapter(pokemon, { pokemon: Pokemon -> listenerTool?.manageLandscapeItemClick(pokemon) })
+        }
     }
 
     fun initRecyclerView(pokemon: ArrayList<Pokemon>,orientation:Int, container:View){
@@ -86,7 +91,7 @@ class PokeFragment: Fragment() {
     }
 
     fun initSearchButton(container:View) = container.searchbarbutton.setOnClickListener {
-        if (!searchbar.text.isEmpty()){
+        if (!container.searchbar.text.isEmpty()){
             QueryPokemonTask().execute("${searchbar.text}")
         }
     }
@@ -113,25 +118,13 @@ class PokeFragment: Fragment() {
         super.onDetach()
         listenerTool = null
     }
-    /*
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        searchPokemon()
-        clearSearchPokemon()
-    }*/
-
-    /*
-    private fun searchPokemon(){
-        bt_search_pokemon.setOnClickListener {
-            if (!et_pokemon.text.isEmpty()){
-                QueryPokemonTask().execute("${et_pokemon.text}")
-            }
-        }
-    }*/
 
 
     private fun pokemonItemClicked(item: Pokemon){
-        startActivity(Intent(this.context, pokeViewer::class.java).putExtra("CLAVIER", item.url))
+        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+            startActivity(Intent(this.context, pokeViewer::class.java).putExtra("CLAVIER", item.url))
+        }
+
     }
 
 
@@ -167,7 +160,7 @@ class PokeFragment: Fragment() {
                     pokemonLisFrag.add(pokemon)
                 }
             } else {
-                for(i in 1..15){
+                for(i in 0..15){
                     val pokeVacio = Pokemon(i, R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(),R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString())
                     pokemonLisFrag.add(pokeVacio)
                 }
@@ -194,9 +187,11 @@ class PokeFragment: Fragment() {
             }
         }
         override fun onPostExecute(pokemonInfo: String) {
+            pokemonLisFrag.clear()
             if (!pokemonInfo.isEmpty()) {
                 val root = JSONObject(pokemonInfo)
                 val results = root.getJSONArray("pokemon")
+                Log.d("LIsta", results.toString())
                 for(i in 0..15) {
                     val resulty = JSONObject(results[i].toString())
                     val result = JSONObject(resulty.getString("pokemon"))
@@ -213,13 +208,13 @@ class PokeFragment: Fragment() {
                     pokemonLisFrag.add(pokemon)
                 }
             } else {
-                for(i in 1..15){
+                for(i in 0..15){
                     val pokeVacio = Pokemon(i, R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(),
                             R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString(), R.string.n_a_value.toString())
                     pokemonLisFrag.add(pokeVacio)
                 }
             }
-            initRecycler(pokemonLisFrag)
+            pokeAdapter.changeDataSet(pokemonLisFrag)
         }
     }
 
