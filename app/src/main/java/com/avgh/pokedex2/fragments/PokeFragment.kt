@@ -57,30 +57,30 @@ class PokeFragment: Fragment() {
 
         if(savedInstanceState != null) pokemonLisFrag = savedInstanceState.getParcelableArrayList<Pokemon>(AppConstants.MAIN_ArrayList_KEY)!!
 
-        initRecyclerView(pokemonLisFrag,resources.configuration.orientation, view)
+        initRecyclerView(resources.configuration.orientation, view)
         initSearchButton(view)
         initClearButton(view)
 
         return view
     }
-    fun initRecycler(pokemon: ArrayList<Pokemon>){
+/*    fun initRecycler(){
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            pokeAdapter = PokemonAdapter(pokemon, { pokemon: Pokemon -> pokemonItemClicked(pokemon) })
+
         }
         if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
-            pokeAdapter = PokemonAdapter(pokemon, { pokemon: Pokemon -> listenerTool?.manageLandscapeItemClick(pokemon) })
+            pokeAdapter = PokemonAdapter(pokemonLisFrag, { pokemon: Pokemon -> listenerTool?.manageLandscapeItemClick(pokemon) })
         }
-    }
+    }*/
 
-    fun initRecyclerView(pokemon: ArrayList<Pokemon>,orientation:Int, container:View){
+    fun initRecyclerView(orientation:Int, container:View){
         val linearLayoutManager = LinearLayoutManager(this.context)
 
         if(orientation == Configuration.ORIENTATION_PORTRAIT){
-            initRecycler(pokemon)
+            pokeAdapter = PokemonAdapter(pokemonLisFrag, { pokemon: Pokemon -> pokemonItemClicked(pokemon) })
             container.rv_pokemon_list.adapter = pokeAdapter as PokemonAdapter
         }
         if(orientation == Configuration.ORIENTATION_LANDSCAPE){
-            initRecycler(pokemon)
+            pokeAdapter = PokemonAdapter(pokemonLisFrag, { pokemon: Pokemon -> listenerTool?.manageLandscapeItemClick(pokemon) })
             container.rv_pokemon_list.adapter = pokeAdapter as PokemonAdapter
         }
 
@@ -97,6 +97,7 @@ class PokeFragment: Fragment() {
     }
     fun initClearButton(container: View) = container.searchbarclearbutton.setOnClickListener{
         searchbar.setText("")
+        pokemonLisFrag.clear()
         FetchPokemonTask().execute("")
     }
 
@@ -165,7 +166,7 @@ class PokeFragment: Fragment() {
                     pokemonLisFrag.add(pokeVacio)
                 }
             }
-            initRecycler(pokemonLisFrag)
+            pokeAdapter.changeDataSet(pokemonLisFrag)
         }
 
     }

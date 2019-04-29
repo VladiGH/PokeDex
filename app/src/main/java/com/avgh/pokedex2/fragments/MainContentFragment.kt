@@ -2,14 +2,13 @@ package com.avgh.pokedex2.fragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.avgh.pokedex2.R
 import com.avgh.pokedex2.models.Pokemon
-import com.bumptech.glide.Glide
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.main_content_fragment_layout.*
 import kotlinx.android.synthetic.main.main_content_fragment_layout.view.*
 
 class MainContentFragment: Fragment() {
@@ -33,12 +32,16 @@ class MainContentFragment: Fragment() {
     }
 
     fun bindData(view: View){
+        Log.d("probando: ",pokemon.id.toString())
+        Log.d("probando2: ",pokemon.fsttype)
+        Log.d("probando3: ",pokemon.weight)
+        Log.d("probando4: ",pokemon.height)
         view.name_main_content_fragment.text = pokemon.name
         view.type_main_content_fragment.text = pokemon.fsttype
         view.weight_main_content_fragment.text = pokemon.weight
         view.height_main_content_fragment.text = pokemon.height
         Picasso.with(this.context)
-                .load(pokemon.sprite)
+                .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id+1}.png")
                 .resize((this.resources.displayMetrics.widthPixels/this.resources.displayMetrics.density).toInt(),256)
                 .centerCrop()
                 .error(R.drawable.ic_pokemon_go)

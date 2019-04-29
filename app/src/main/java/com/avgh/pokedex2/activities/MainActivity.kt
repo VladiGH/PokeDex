@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.widget.Toast
 import com.avgh.pokedex2.AppConstants
 import com.avgh.pokedex2.adapters.PokemonAdapter
@@ -59,7 +60,6 @@ class MainActivity : AppCompatActivity(), PokeFragment.SearchNewPokemonListener 
 
 
     override fun searchPokemon(pokeName: String) {
-
     }
 
     override fun managePortraitItemClick(pokemon: Pokemon) {

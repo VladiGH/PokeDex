@@ -9,6 +9,7 @@ import com.avgh.pokedex2.MyPokeAdapter
 import com.avgh.pokedex2.R
 import com.avgh.pokedex2.models.Pokemon
 import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.list_element_pokemon.view.*
 
 
@@ -29,10 +30,12 @@ class PokemonAdapter(var items: List<Pokemon>, val clickListener: (Pokemon) -> U
         holder.bind(items[position], clickListener)
 
         var posPlus:Int = position + 1
-
-        Glide.with(holder.itemView.context)
-            .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$posPlus.png")
+        Picasso.with(holder.itemView.context)
+        //Glide.with(holder.itemView.context)
+            .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${items[position].id+1}.png")
+            .error(R.drawable.ic_pokemon_go)
             .into(holder.itemView.tv_pokemon_img)
+
     }
 
     override fun changeDataSet(newDataSet: ArrayList<Pokemon>) {
