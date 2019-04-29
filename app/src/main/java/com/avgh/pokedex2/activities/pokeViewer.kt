@@ -9,6 +9,7 @@ import com.avgh.pokedex2.R
 import com.avgh.pokedex2.models.Pokemon
 import com.avgh.pokedex2.utilities.NetworkUtilities
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.main_content_fragment_layout.*
 import kotlinx.android.synthetic.main.pokemon_element.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -19,14 +20,14 @@ import java.net.URL
 class pokeViewer : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.pokemon_element)
+        setContentView(R.layout.main_content_fragment_layout)
 
         val uri:String = this.intent.extras.getString("CLAVIER")
         setSupportActionBar(toolbarviewer)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        collapsingtoolbarviewer.setExpandedTitleTextAppearance(R.style.ExpandedAppBar)
-        collapsingtoolbarviewer.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar)
+     //   collapsingtoolbarviewer.setExpandedTitleTextAppearance(R.style.ExpandedAppBar)
+     //   collapsingtoolbarviewer.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar)
 
         FetchPokemonTask().execute(uri)
     }
@@ -37,12 +38,12 @@ class pokeViewer : AppCompatActivity() {
             .resize((this.resources.displayMetrics.widthPixels/this.resources.displayMetrics.density).toInt(),256)
             .centerCrop()
             .error(R.drawable.ic_pokemon_go)
-            .into(app_bar_image_viewer)
-        collapsingtoolbarviewer.title = pokemon.name
-        weight.text = pokemon.weight
-        height.text = pokemon.height
-        fstType.text = pokemon.fsttype
-        sndType.text = pokemon.sndtype
+            .into(image_main_content_fragment)
+        name_main_content_fragment.text = pokemon.name
+        weight_main_content_fragment.text = pokemon.weight
+        height_main_content_fragment.text = pokemon.height
+        type_main_content_fragment.text = pokemon.fsttype
+        //sndType.text = pokemon.sndtype
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

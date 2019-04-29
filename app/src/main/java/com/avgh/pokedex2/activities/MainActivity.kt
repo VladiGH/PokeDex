@@ -71,8 +71,8 @@ class MainActivity : AppCompatActivity(), PokeFragment.SearchNewPokemonListener 
     private fun changeFragment(id: Int, frag: Fragment){ supportFragmentManager.beginTransaction().replace(id, frag).commit() }
 
     override fun manageLandscapeItemClick(pokemon: Pokemon) {
-        this.mainContentFragment = MainContentFragment.newInstance(pokemon)
-        changeFragment(R.id.fragment_content_right, this.mainContentFragment)
+        mainContentFragment = MainContentFragment.newInstance(pokemon)
+        changeFragment(R.id.fragment_content_right, mainContentFragment)
     }
 
 
