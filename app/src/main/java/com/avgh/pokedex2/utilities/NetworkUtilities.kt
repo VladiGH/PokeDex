@@ -15,6 +15,7 @@ class NetworkUtilities {
 
     private val TAG = NetworkUtilities::class.java.simpleName
 
+    //TODO(1): Acá se construye la URL y se le va agregando segun vayamos necesitando en el path
     fun buildUrl(root: String, pokeID: String): URL {
         val builtUri = Uri.parse(POKEMON_API_BASE_URL)
             .buildUpon()

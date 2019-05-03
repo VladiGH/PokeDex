@@ -19,6 +19,8 @@ import java.net.MalformedURLException
 import java.net.URL
 
 class pokeViewer : AppCompatActivity() {
+
+    //TODO(1): aca se infla la vista del modo portrait con la info de cada pokemon por medio de una intent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_content_fragment_layout)
@@ -33,6 +35,7 @@ class pokeViewer : AppCompatActivity() {
         FetchPokemonTask().execute(uri)
     }
 
+    //TODO(1.2): esto solo es para asignarle a cada campo del pokemon su data
     fun init(pokemon: Pokemon){
         Picasso.with(this)
             .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png")
@@ -47,6 +50,7 @@ class pokeViewer : AppCompatActivity() {
         //sndType.text = pokemon.sndtype
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when(item!!.itemId){
             android.R.id.home -> {onBackPressed();true}
@@ -54,6 +58,7 @@ class pokeViewer : AppCompatActivity() {
         }
     }
 
+    //TODO(1.3): El fetch diferente porque es especificamente para un pokemon
     private inner class FetchPokemonTask : AsyncTask<String, Void, String>() {
 
         override fun doInBackground(vararg query: String): String {

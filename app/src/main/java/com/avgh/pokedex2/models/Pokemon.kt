@@ -3,6 +3,8 @@ package com.avgh.pokedex2.models
 import android.os.Parcel
 import android.os.Parcelable
 
+//TODO(1): se hace una data class con todos los campos que queremos de nuestro objeto y se hace parcelable para poder
+//manejar mejor los objetos para serializarlo y se le asigna a cada valor un valor por default para que no sea nulo en algun momento
 data class Pokemon (val id: Int = 0,
                     val name: String = "N/A",
                     val fsttype: String = "N/A",

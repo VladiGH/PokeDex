@@ -28,13 +28,14 @@ import org.json.JSONObject
 import java.io.IOException
 
 class PokeFragment: Fragment() {
-
+    //TODO(1): ESTA CLASE ES LA DEL RECYCLERVIEW, EL FRAGMENTO DE LA IZQUIERDA
     private lateinit var  pokemonLisFrag: ArrayList<Pokemon>
 
     private lateinit var pokeAdapter: MyPokeAdapter
 
     var listenerTool :  SearchNewPokemonListener? = null
 
+    //TODO(1.2): Este objeto es la instancia para el arraylist de pokemon
     companion object {
         fun newInstance(dataset : ArrayList<Pokemon>): PokeFragment{
             val newFragment = PokeFragment()
@@ -42,6 +43,7 @@ class PokeFragment: Fragment() {
             return newFragment
         }
     }
+
 
     interface SearchNewPokemonListener{
         fun searchPokemon(pokeName: String)
@@ -51,6 +53,8 @@ class PokeFragment: Fragment() {
         fun manageLandscapeItemClick(pokemon: Pokemon)
     }
 
+    //TODO(1.3): aca se infla la vista del recycler en el fragmento de la izquierda y se verifica si hay instancias de la lista
+    // para asginarla a la lista que contiene los pokemon
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val view =inflater.inflate(R.layout.poke_list_fragment, container, false)
@@ -72,6 +76,8 @@ class PokeFragment: Fragment() {
         }
     }*/
 
+
+    //TODO(1.4):en esta funcion se define que adapter se le asignara al recycler view segun la orientacion del telefono
     fun initRecyclerView(orientation:Int, container:View){
         val linearLayoutManager = LinearLayoutManager(this.context)
 
@@ -166,6 +172,7 @@ class PokeFragment: Fragment() {
                     pokemonLisFrag.add(pokeVacio)
                 }
             }
+            //TODO(1.5): AL ADAPTER HAY QUE HACERLE EL CHANGEDATASET CON LA NUEVA LISTA YA LLENADA ESTO SE HACE SIEMPRE QUE LA LISTA SE ACTUALIZA
             pokeAdapter.changeDataSet(pokemonLisFrag)
         }
 
